@@ -1,17 +1,46 @@
+import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:lab1/json_serializable_converter.dart';
+import 'package:lab1/models/note_for_listing.dart';
+import 'package:lab1/services/notes_service.dart';
+import 'package:lab1/views/note_list.dart';
+
+import 'models/note.dart';
+
+void setupLocator(){
+  GetIt.I.registerLazySingleton(() => NotesService.create(ChopperClient(
+   baseUrl: 'https://tq-notesapi-jkrgrdggbq-el.a.run.app',
+   interceptors: [
+      authHeaderInterceptor
+   ],
+   converter: JsonSerializableConverter({
+    Note: Note.fromJson,
+    NoteForListing: NoteForListing.fromJson
+   })
+  )));
+}
+Future<Request> authHeaderInterceptor(Request request){
+  final headers = Map<String, String>.from(request.headers);
+  headers['apiKey'] = 'e5245278.ed86-4196-81d6-cdf608b02623';
+
+  request = request.copyWith(headers: headers);
+  return request;
+}
 
 void main() {
-  runApp(const MyApp());
+  setupLocator();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -24,7 +53,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: NoteList(),
     );
   }
 }
