@@ -81,14 +81,42 @@ class _NoteListState extends State<NoteList>{
                     }else{
                       message = 'An error ocurred';
                     }
-                    Scaffold.of(context).showSnackBar(SnackBar(content: Text(message),duration : new Duration))
+                    Scaffold.of(context).showSnackBar(SnackBar(content: Text(message),duration : new Duration()));
+                    return deleteResult.body ?? false;
                   }
-                }
-                )
-
-            }
-          ) 
-        }),
-    )
+                  print(result);
+                  return result;
+                },
+                background: Container(
+                  color: Colors.red,
+                  padding: EdgeInsets.only(left: 16),
+                  child: Align(
+                    child: Icon(Icons.delete, color: Colors.white),
+                    alignment: Alignment.center,
+                  ), 
+                ),
+                child: ListTile(
+                  title: Text(
+                    _apiResponse.body[index].noteTitle,
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                  subtitle: Text(
+                    'Last Edited on ${formatDateTime(_apiResponse.body[index].latestEditDateTime ?? _apiResponse.body[index].createDateTime)}'),
+                  onTap:(){
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => NoteModify(
+                        noteID: _apiResponse.body[index].noteID))).then((data){
+                          _fetchNotes();
+                        });
+                  },
+                  
+                ),
+              );
+            },
+            itemCount: _apiResponse.body.length,
+            
+          ) ;
+        },
+    ));
   }
 }

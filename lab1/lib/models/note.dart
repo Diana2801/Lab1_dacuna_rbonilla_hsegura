@@ -10,7 +10,7 @@ class Note{
     DateTime createDateTime;
     DateTime latestEditDateTime;
 
-    Note({this.noteID, this.noteTitle, this.noteContent, this.createDateTime, this.latestEditDateTime});
+    Note({required this.noteID,required this.noteTitle,required this.noteContent,required this.createDateTime, this.latestEditDateTime});
 
-    static fromJson(Map<String, dynamic> item) => _$NoteFromJson(item);
+    static fromJson(Map<String, dynamic> item, {required bool error, required String errorMessage}) => _$NoteFromJson(item);
 }

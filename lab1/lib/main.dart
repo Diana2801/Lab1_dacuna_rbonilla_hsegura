@@ -20,7 +20,7 @@ void setupLocator(){
    })
   )));
 }
-Future<Request> authHeaderInterceptor(Request request){
+Future<Request> authHeaderInterceptor(Request request)async{
   final headers = Map<String, String>.from(request.headers);
   headers['apiKey'] = 'e5245278.ed86-4196-81d6-cdf608b02623';
 

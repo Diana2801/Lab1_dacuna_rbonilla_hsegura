@@ -6,7 +6,7 @@ ResourceError _$ResourceErrorFromJson(Map<String, dynamic> json){
     json['message'] as String,
   );
 }
-Map<String, dynamic>_$NoteManipulationToJson(ResourceError instance)=>
+Map<String, dynamic>_$ResourceErrorToJson(ResourceError instance)=>
 <String, dynamic>{
   'type':instance.type,
   'message':instance.message,
